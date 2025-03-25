@@ -4,14 +4,12 @@ public class Book {
     public Book(String title, int pageCount) {
         this.title = title;
         this.pageCount = pageCount;
-        //try catch
         if(title == null || title == "") {
             throw new IllegalArgumentException("Title cannot be empty");
         }
         if(pageCount <= 0) {
             throw new IllegalArgumentException("Page count must be positive");
         }
-        //try catch
     }
     public String getTitle() {
         return title;
