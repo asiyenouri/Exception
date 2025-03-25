@@ -1,10 +1,11 @@
 import java.util.ArrayList;
-import java.lang.Throwable;
+import java.util.Objects;
+
 
 public class Library {
     private ArrayList<Book> books;
     public Library() {
-        Library books = new Library(); //??
+        books = new ArrayList<>();
     }
     public void addBook(Book book) throws InvalidBookException {
         if(book == null) {
@@ -25,27 +26,33 @@ public class Library {
         if (books == null) {
             throw new EmptyLibraryException("Library is empty, no books to borrow");
         }
-        for (Book book : books) {
-            if (!(findBook(title).equals(book))) {
-                throw new BookNotFoundException("Book with \" " + title + " \" not found");
-            }
-            else {
-                System.out.println(title + " borrowed successfully");
-                System.out.println("Book's info: " + book.toString());
-            }
+        if (Objects.isNull(findBook(title))) {
+            throw new BookNotFoundException("Book with title \" " + title + " \" not found");
         }
+        System.out.println(title + " borrowed successfully");
+
     }
+
     public void returnBook(String title)throws BookNotFoundException {
         for (Book book : books) {
-            if (findBook(title).equals(book)) {
+            if (Objects.equals(findBook(title), book.getTitle())) {
                 System.out.println(title + " returned successfully");
                 System.out.println("Book's info: " + book.toString());
+                return;
             }
-            else {
-                throw new BookNotFoundException()
+        }
+        throw new BookNotFoundException("Cannot return. book with title " + title + " not found");
+    }
+    public void listBooks() throws EmptyLibraryException{
+        if (books.isEmpty()) {
+            throw new EmptyLibraryException("Library is empty");
+        }
+        else {
+            System.out.println("Books in Library:");
+            for (Book book : books) {
+                System.out.println(book.toString());
             }
         }
     }
-    public void listBooks() throws EmptyLibraryException{}
 
 }
